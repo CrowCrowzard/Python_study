@@ -6,10 +6,10 @@ from calc import sum, is_even
 
 class CalcTestCase(TestCase):
     def setUp(self):
-        print 'before test'
+        print ('before test')
 
     def tearDown(self):
-        print 'after test'
+        print ('after test')
 
     def test_sum(self):
         eq_(sum(1,2), 3)
