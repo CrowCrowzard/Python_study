@@ -1,21 +1,21 @@
 # TODO 7時間以上かかるので時間短縮を考える
-# TODO .envを使う
 # Refere: http://qiita.com/lovemuffim114/items/a4760cfa9fc0fff15863
 #!/usr/bin/env python3
 # coding: UTF-8
 
 from bs4 import BeautifulSoup
 import requests
-
 from time import sleep
 import json
 from progressbar import ProgressBar
 
+import qiita_key
+
 # QiitaにLogin
 payload = {
     'utf8' : '✓',
-    'identity': '', # ユーザー名
-    'password': '', # パスワード
+    'identity': qiita_key.ID, # ユーザー名
+    'password': qiita_key.PW, # パスワード
 }
 
 # authenticity_tokenの取得
@@ -58,9 +58,4 @@ finally:
     # results.jsonに保存
     with open('results.json', 'a') as f:
         json.dump(results, f, ensure_ascii=False, indent=4, separators=(',', ': '))
-
-
-if __name__ == '__main__':
-    main()
-
 
