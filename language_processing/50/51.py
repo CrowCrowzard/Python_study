@@ -1,22 +1,65 @@
 #!/usr/bin/env python3
 # coding: UTF-8
 
+import re
+
 ENGLISH_TXT = 'nlp.txt'
 
-with open(ENGLISH_TXT, 'r') as file:
-    cnt = 0
-    for line in file.readlines():
-        if line == "\n":
-            continue
-        for word in line.strip().split(' '):
-            if cnt >= 50:
-                break
-            else:
-                print (word)
-            cnt +=1
-        if cnt >= 50:
-            break
-        else:
-            print ()
-            cnt += 1
+def nlp_lines():
+    '''
+    nlp.txtを1文つず読み込むジェネレータ
+    nlp.txtを順次読み込んで1文ずつ返す
+
+    返り値：
+    1文の文字列
+    '''
+    with open(ENGLISH_TXT, 'r') as lines:
+        # 文切り出しの正規表現コンパイル
+        pattern = re.compile(r'''
+            (
+                ^                   # 行頭
+                .*?                 # 任意のn文字、最小マッチ
+                [\.|\;|\:\|?|\!]    # . or ; or : or ? or !
+            )
+            \s                      # 空白文字
+            (
+                [A-Z].*             # 英大文字以降(=次の文以降)
+            )
+        ''', re.MULTILINE + re.VERBOSE + re.DOTALL)
+
+        for line in lines:
+            line = line.strip() # 前後の空白文字除去
+            while len(line) > 0:
+                # 行から1文を取得
+                match = pattern.match(line)
+                if match:
+                    # 切り出した文を返す
+                    yield match.group(1)    # 行頭の文字
+                    line = match.group(2)   # 次の文以降
+                else:
+                    # 区切りがないので、最後までが1文
+                    yield line
+                    line = ''
+
+def nlp_words():
+    '''
+    nlp.txtを1単語ずつ返すジェネレータ
+    文の終わりでは空文字を返す
+
+    戻り値：
+    1単語、ただし文の終わりでは空文字を返す
+    '''
+    for line in nlp_lines():
+        # 単語に分解、終端の区切り文字は除去して返す
+        for word in line.split(' '):
+            yield word.rstrip('.,;:?!')
+        # 文の終わりは空文字
+        yield ''
+
+def main():
+    for word in nlp_words():
+        print (word)
+
+if __name__ == '__main__':
+    main()
 
