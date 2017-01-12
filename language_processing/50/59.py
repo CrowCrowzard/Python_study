@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # coding: UTF-8
-# TODO don't print result
 
 import os
 import subprocess
@@ -38,7 +37,7 @@ def parse_nlp():
             check=True      # エラーチェックあり
         )
 
-def ParseAndExtractNP(str, list_up):
+def ParseAndExtractNP(str, list_np):
     '''
     S式をタグと内容に分解し内容のみを返す
     またタグがNPの場合は、内容をlist_npにも追加する
@@ -49,7 +48,7 @@ def ParseAndExtractNP(str, list_up):
     タグを除いた内容
     '''
     # タグと内容を抽出
-    match = pattern.math(str)
+    match = pattern.match(str)
     tag = match.group(1)
     value = match.group(2)
 
@@ -69,12 +68,12 @@ def ParseAndExtractNP(str, list_up):
             if depth == 0:
                 # 深さが戻ったので、カッコでくくられた部分の切り出し完了
                 # 切り出した部分はParseAndExtracNP()に任せる(再帰呼出し)
-                words.append(ParseAndExtracNP(chunk, list_np))
+                words.append(ParseAndExtractNP(chunk, list_np))
                 chunk = ''
-            else:
-                # カッコでくくられていない部分の空白は無視
-                if not (depth == 0 and c == ' '):
-                    chunk += c
+        else:
+            # カッコでくくられていない部分の空白は無視
+            if not (depth == 0 and c == ' '):
+                chunk += c
 
     # 最後の単語を追加
     if chunk != '':
@@ -98,9 +97,9 @@ def main():
     root = ET.parse(fname_parsed)
 
     # sentence列挙、1文ずつ処理
-    for parse in root.iterfind('./document/sentences/sntence/parse'):
+    for parse in root.iterfind('./document/sentences/sentence/parse'):
         result = []
-        ParseAndExtracNP(parse.text.strip(), result)
+        ParseAndExtractNP(parse.text.strip(), result)
         print (*result, sep='\n')
 
 if __name__ == '__main__':
