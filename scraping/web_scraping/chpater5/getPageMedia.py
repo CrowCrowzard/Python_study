@@ -22,7 +22,7 @@ def getAbsoluteURL(baseUrl, source):
         return None
     return url
 
-def getDownloadPath(baseUrl, absoluteUrl, downloadDirectory):
+def getDownloadPath(baseUrl, absoluteUrl):
     path = absoluteUrl.replace("www.", "")
     path = path.replace(baseUrl, "")
     path = downloadDirectory + path
@@ -42,7 +42,7 @@ def main():
         fileUrl = getAbsoluteURL(baseUrl, download["src"])
         if fileUrl is not None:
             print (fileUrl)
-            urlretrieve(fileUrl, getDownloadPath(baseUrl, fileUrl, downloadDirectory))
+            urlretrieve(fileUrl, getDownloadPath(baseUrl, fileUrl))
 
 if __name__ == '__main__':
     main()
