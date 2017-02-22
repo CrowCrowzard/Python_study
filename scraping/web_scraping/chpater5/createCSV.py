@@ -1,0 +1,20 @@
+# coding: UTF-8
+
+import os
+import csv
+
+csvFile = open("../files/test.csv", 'w+', newline='')
+
+def main():
+    try:
+        writer = csv.writer(csvFile)
+        writer.writerow(('number', 'number plus 2', 'number times 2'))
+        for i in range(10):
+            writer.writerow((i, i+2, i*2))
+    finally:
+        csvFile.close()
+
+if __name__ == '__main__':
+    main()
+
+
