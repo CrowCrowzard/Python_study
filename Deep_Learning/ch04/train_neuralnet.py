@@ -31,8 +31,8 @@ def main():
         t_batch = t_train[batch_mask]
 
         # 勾配の計算
-        #grad = network.numerical_gradient(x_batch, t_batch)
-        grad = network.gradient(x_batch, t_batch) # 高速版
+        grad = network.numerical_gradient(x_batch, t_batch)
+        #grad = network.gradient(x_batch, t_batch) # 高速版
 
         # パラメータの更新
         for key in ('W1', 'b1', 'W2', 'b2'):
