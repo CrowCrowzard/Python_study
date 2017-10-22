@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # coding: UTF-8
 
-sentence = 'Hi He Lied Because Boron Could Not Oxidize Fluorine. New Nations Might Also Sign Peace Security Clause. Arthur King Can.'
+sentence = "Hi He Lied Because Boron Could Not Oxidize Fluorine. New Nations Might Also Sign Peace Security Clause. Arthur King Can."
+position = [1, 5, 6, 7, 8, 9, 15, 16, 19]
 
-result = {}
-word = sentence.split(' ')
-for i,w in enumerate(word):
-    if (i == 0 or i == 4 or i == 5 or i == 6 or i== 7 or i == 8 or i == 14 or i == 15 or i == 18):
-        result[w[0]] = i+1
+dict = {}
+for index, word in enumerate(sentence.split(' ')):
+    pos = index+1
+    if pos in position:
+        dict[word[0]] = pos
     else:
-        result[w[0:2]] = i+1
+        dict[word[0:2]] = pos
 
-print (result)
-    
+print (dict)
