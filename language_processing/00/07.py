@@ -2,7 +2,7 @@
 # coding: UTF-8
 
 def get_info(x, y, z):
-    return '%d時の%sは%.1f' % (x, y, z)
+    return "{}時の{}は{}".format(x, y, z)
 
 def main():
     x = 12
